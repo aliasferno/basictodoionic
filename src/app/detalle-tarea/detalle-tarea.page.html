@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalle de la Tarea</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="tareaDetalle">
+    <ion-card-header>
+      <ion-card-title>{{ tareaDetalle.tarea }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Descripcion:</strong> {{ tareaDetalle.descripcionTarea }}</p>
+      <p><strong>Fecha:</strong> {{ tareaDetalle.fechaTarea | date }}</p>
+      <ion-checkbox [(ngModel)]="tareaDetalle.completado" disabled></ion-checkbox>
+      <p *ngIf="tareaDetalle.completado">Esta tarea esta completada.</p>
+      <p *ngIf="!tareaDetalle.completado">Esta tarea no esta completada.</p>
+
+      <ion-button expand="full" color="success" (click)="completarTarea()">
+        {{ tareaDetalle.completado ? 'Marcar como incompleta' : 'Marcar como completada' }}
+      </ion-button>
+
+      <ion-button expand="full" color="primary" (click)="editarTarea()">
+        Editar tarea
+      </ion-button>
+
+      <ion-button expand="full" color="danger" (click)="eliminarTarea()">
+        Eliminar tarea
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

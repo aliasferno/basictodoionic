@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Tarea</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="tareaEditar">
+    <ion-card-header>
+      <ion-card-title>Editar: {{ tareaEditar.tarea }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Descripcion</ion-label>
+        <ion-input [(ngModel)]="tareaEditar.descripcionTarea"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Fecha</ion-label>
+        <ion-datetime [(ngModel)]="tareaEditar.fechaTarea"></ion-datetime>
+      </ion-item>
+
+      <ion-button expand="full" color="primary" (click)="guardarCambios()">
+        Guardar cambios
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

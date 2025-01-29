@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Crear Tarea</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item>
+    <ion-textarea placeholder="Que necesitas hacer hacer?" [(ngModel)] = "txt_tarea">
+    </ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-textarea placeholder="Descripcion" [(ngModel)] = "txt_descripcion" style="font-size: smaller;"></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-datetime-button datetime="datetime">
+    </ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime [(ngModel)]="fechaSeleccionada" id="datetime"></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="save" (click) = guardarTarea()></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
