@@ -13,31 +13,57 @@ import { NavController } from '@ionic/angular';
 export class DetalleTareaPage implements OnInit {
 
   tareaDetalle: any; // Variable para almacenar el detalle de la tarea
+  txt_tareaId:number=0;
+  txt_nombre:string='';
+  txt_descripcion:string='';
+  txt_fecha:string='';
 
   constructor(
     private route: ActivatedRoute, // Inyectar ActivatedRoute
     private navCtrl: NavController, // Inyectar NavController
-    private tareaService: TareasService, // Inyectar servicio de tareas
+    private tarea: TareasService, // Inyectar servicio de tareas
     private router: Router // Inyectar Router para la navegación
-  ) {}
-
-  ngOnInit() {
-    // Obtener los parámetros queryParams de la URL
-    this.route.queryParams.subscribe((params) => {
-      if (params && params['tarea']) {
-        // Parsear la tarea desde el JSON string
-        this.tareaDetalle = JSON.parse(params['tarea']);
-        console.log(this.tareaDetalle); // Muestra la tarea en consola
-      }
+  ) {
+    this.tarea.getSession('tareaId').then((res:any)=>{
+      this.txt_tareaId = res;
+      this.cargarDatos();
     });
   }
 
-  // Función para eliminar la tarea
-  async eliminarTarea() {
-    // Eliminar la tarea de Preferences
-    await Preferences.remove({ key: this.tareaDetalle.idtarea });
-    // Redirigir a la página principal (home)
-    this.navCtrl.navigateRoot('/home');
+  ngOnInit() {
+  }
+
+  cargarDatos(){
+    let datos = {
+      "action":"dtarea",
+      "idtarea":this.txt_tareaId
+    }
+
+    this.tarea.postData(datos).subscribe((res:any)=>{
+
+      console.log(res);
+      if(res.estado){
+        this.tareaDetalle = res.data;
+      }else{
+        this.tarea.showToast(res.mensaje, 2000);
+      }
+    })
+  }
+
+
+  eliminarTarea(){
+    let datos = {
+      "action":"etarea",
+      "idtarea":this.txt_tareaId
+    }
+    this.tarea.postData(datos).subscribe((res:any)=>{
+      if(res.estado){
+        this.tarea.showToast(res.mensaje, 2000);
+        this.navCtrl.navigateRoot('/home');
+      }else{
+        this.tarea.showToast(res.mensaje, 2000);
+      }
+    })
   }
 
   // Función para completar la tarea

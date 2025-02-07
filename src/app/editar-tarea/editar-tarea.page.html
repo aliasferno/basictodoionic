@@ -7,17 +7,39 @@
 <ion-content>
   <ion-card *ngIf="tareaEditar">
     <ion-card-header>
-      <ion-card-title>Editar: {{ tareaEditar.tarea }}</ion-card-title>
+      <ion-card-title>Editar Tarea</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-item>
-        <ion-label>Descripcion</ion-label>
-        <ion-input [(ngModel)]="tareaEditar.descripcionTarea"></ion-input>
+        <ion-label>Nombre</ion-label>
+        <ion-input [(ngModel)]="txt_nombre"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>Fecha</ion-label>
-        <ion-datetime [(ngModel)]="tareaEditar.fechaTarea"></ion-datetime>
+        <ion-label>Descripcion</ion-label>
+        <ion-input [(ngModel)]="txt_descripcion"></ion-input>
       </ion-item>
+      <ion-item>
+        <ion-datetime-button datetime="datetime">
+        </ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime [(ngModel)]="fechaSeleccionada" id="datetime"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+      <ion-list>
+        <ion-item>
+          <ion-select
+            aria-label="Proyectos"
+            [(ngModel)]="proyectoSeleccionado"
+            placeholder="Seleccionar Proyecto"
+          >
+            @for (proyecto of proyectosFiltrados; track proyecto.codigo) {
+            <ion-select-option [value]="proyecto.nombre">{{ proyecto.nombre}}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </ion-list>
 
       <ion-button expand="full" color="primary" (click)="guardarCambios()">
         Guardar cambios

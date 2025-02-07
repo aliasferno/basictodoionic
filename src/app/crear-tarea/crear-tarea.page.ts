@@ -16,29 +16,53 @@ export class CrearTareaPage implements OnInit {
   txt_descripcion: string = '';
   fechaSeleccionada: IonDatetime | undefined;
   clave_tarea: string = '';
+  idProyectos: number = 0;
+  proyectoSeleccionado: string = '';
   tareaNueva: object = {};
+  proyectosFiltrados: any[] = [];
+  proyecto:any;
 
   constructor(
     private tarea : TareasService,
     private navCtrl: NavController,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) { 
+    this.lproyectos();
+  }
 
   ngOnInit() {
   }
 
-  async guardarTarea(){ 
-    const nextId = await this.tarea.getNextTaskId(); // <- Aquí se usa Preferences bajo el capó
-    this.clave_tarea = nextId.toString();
-    this.tareaNueva = {
-      idtarea: this.clave_tarea,
-      tarea: this.txt_tarea,
-      descripcionTarea: this.txt_descripcion,
-      fechaTarea: this.fechaSeleccionada,
-      completado: false
-    };
-    this.tarea.crearTarea("tarea " + this.clave_tarea, this.tareaNueva);
-    this.navCtrl.navigateRoot('/home');
+  async guardarTarea(){
+
+    let datos = {
+      "action": 'nuevat',
+      "nombre": this.txt_tarea,
+      "descripcion": this.txt_descripcion,
+      "fecha": this.fechaSeleccionada,
+      "proyecto": this.proyectoSeleccionado,
+      "completado": 0
+    }
+    this.tarea.postData(datos).subscribe((res:any)=>{
+      if(res.estado){
+        this.navCtrl.navigateRoot('/home');
+      }else{
+        this.tarea.showToast(res.mensaje, 2000);
+      }
+    })
   }
 
+  lproyectos(){
+    let datos = {
+      "action": 'lproyectos'
+    }
+
+    this.tarea.postData(datos).subscribe((res:any)=>{
+      if(res.estado){
+        this.proyectosFiltrados = res.data;
+      }else{
+        this.tarea.showToast(res.mensaje, 2000);
+      }
+    })
+  }
 }

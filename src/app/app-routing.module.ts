@@ -23,6 +23,18 @@ const routes: Routes = [
     path: 'editar-tarea',
     loadChildren: () => import('./editar-tarea/editar-tarea.module').then( m => m.EditarTareaPageModule)
   },
+  {
+    path: 'proyectos',
+    loadChildren: () => import('./proyectos/proyectos.module').then( m => m.ProyectosPageModule)
+  },
+  {
+    path: 'crear-proyecto',
+    loadChildren: () => import('./crear-proyecto/crear-proyecto.module').then( m => m.CrearProyectoPageModule)
+  },
+  {
+    path: 'editar-proyecto',
+    loadChildren: () => import('./editar-proyecto/editar-proyecto.module').then( m => m.EditarProyectoPageModule)
+  },
 ];
 
 @NgModule({

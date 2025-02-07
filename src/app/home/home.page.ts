@@ -23,7 +23,7 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadTareas(); // Cargar tareas al iniciar la página
+    this.ltareas(); // Cargar tareas al iniciar la página
   }
 
   // Método para navegar a la página de creación de tareas
@@ -32,34 +32,20 @@ export class HomePage implements OnInit {
   }
 
   // Seleccionar una tarea y navegar a la página de detalles
-  async seleccionarTarea(tarea: any) {
-    console.log(tarea);
-
-    const tareaGuardada = await Preferences.get({ key: tarea.idtarea });
-    if (tareaGuardada.value) {
-      const tareaObj = JSON.parse(tareaGuardada.value);
-      this.navCtrl.navigateForward(['/detalle-tarea'], {
-        queryParams: {
-          tarea: JSON.stringify(tareaObj),
-        },
-      });
-    }
-  }
-
-  // Cargar todas las tareas desde el servicio y actualizar las tareas filtradas
-  async loadTareas() {
-    this.tareas = await this.tarea.obtenerTodasLasTareas();
-    this.tareasFiltradas = [...this.tareas]; // Inicializar las tareas filtradas con todas las tareas
+  async seleccionarTarea(tareaId: any) {
+    console.log(tareaId);
+    this.navCtrl.navigateRoot(['detalle-tarea']);
+    this.tarea.createSesion('tareaId', tareaId);;
   }
 
   // Filtrar las tareas según el texto del buscador
   filtrarTareas() {
     if (this.searchText.trim() === '') {
-      this.tareasFiltradas = [...this.tareas]; // Si no hay texto, mostrar todas las tareas
+      this.tareasFiltradas = [...this.tareas];
     } else {
       this.tareasFiltradas = this.tareas.filter(tarea =>
-        tarea.tarea.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        tarea.descripcionTarea.toLowerCase().includes(this.searchText.toLowerCase())
+        tarea.nombre.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        tarea.descripcion.toLowerCase().includes(this.searchText.toLowerCase())
       );
     }
   }
@@ -76,7 +62,31 @@ export class HomePage implements OnInit {
 
   // Recargar las tareas cuando se regresa a la vista
   ionViewWillEnter() {
-    this.loadTareas();
+    this.ltareas();
+  }
+
+  irAProyectos(){
+
+    this.navCtrl.navigateForward('proyectos');
+
+  }
+  irATareas(){
+    this.navCtrl.navigateForward('home');
+  }
+
+  ltareas(){
+    let datos = {
+      "action": 'ltareas'
+    }
+
+    this.tarea.postData(datos).subscribe((res:any)=>{
+      if(res.estado){
+        this.tareasFiltradas = res.data;
+        this.tareas = res.data;
+      }else{
+        this.tarea.showToast(res.mensaje, 2000);
+      }
+    })
   }
 
 }

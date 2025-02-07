@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Proyecto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Editar: {{ proyecto.nombre }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Nombre:</ion-label>
+        <ion-input [(ngModel)]="txt_nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Descripcion:</ion-label>
+        <ion-input [(ngModel)]="txt_descripcion"></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" color="primary" (click)="guardarCambios()">
+        Guardar cambios
+      </ion-button>
+      <ion-button expand="full" color="danger" (click)="eliminarProyecto()">
+        Eliminar Proyecto
+      </ion-button>
+      <ion-button expand="full" color="success" (click)="cancelar()">
+        Cancelar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

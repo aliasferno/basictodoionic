@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,11 @@ import { Preferences } from '@capacitor/preferences';
 export class TareasService {
 
   private lastIdKey = 'lastTaskId';
+  server: string = "http://localhost/ionic/TareasWS/tareas.php";
 
   constructor(
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public http: HttpClient
   ) { }
 
   async showToast(mensaje: string, tiempo: number){
@@ -31,19 +34,6 @@ export class TareasService {
     const { value } = await Preferences.get({ key: id });
     return value ? JSON.parse(value) : null; // Devuelve el objeto o null si no existe
   }
-
-  // async obtenerTodasLasTareas(): Promise<any[]> {
-  //   const { keys } = await Preferences.keys(); // Obtiene todas las claves almacenadas
-  //   const tareas: any[] = [];
-
-  //   for (const key of keys) {
-  //     const { value } = await Preferences.get({ key });
-  //     if (value) {
-  //       tareas.push(JSON.parse(value)); // Convierte la tarea de string a objeto y la agrega al array
-  //     }
-  //   }
-  //   return tareas;
-  // }
 
   async obtenerTodasLasTareas(): Promise<any[]> {
     const { keys } = await Preferences.keys(); // Obtiene todas las claves almacenadas
@@ -80,5 +70,25 @@ export class TareasService {
     await Preferences.set({ key: this.lastIdKey, value: newId.toString() });
 
     return newId;
+  }
+  postData(body:any){
+    let head = new HttpHeaders({'Content-Type':'application/json, charset:utf8'});
+    let options = {
+      headers: head
+    };
+    return this.http.post(this.server, JSON.stringify(body), options);
+  }
+
+  async createSesion(id: string, valor: string){
+    await Preferences.set({key: id, value: valor});
+  }
+
+  async getSession(id:string){
+    const item = await Preferences.get({key: id});
+    return item.value;
+  }
+
+  async closeSession(){
+    await Preferences.clear();
   }
 }

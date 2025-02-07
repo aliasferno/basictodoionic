@@ -1,4 +1,4 @@
-<ion-menu contentId="main-content">
+<ion-menu contentId="pro-content">
   <ion-header class="menu-header">
     <ion-toolbar color="primary" class="menu-toolbar">
       <ion-title>
@@ -8,7 +8,6 @@
       </ion-title>
     </ion-toolbar>
   </ion-header>
-
   <ion-content>
     <ion-list>
       <ion-item button (click)="irAProyectos()">
@@ -21,26 +20,23 @@
       </ion-item>
     </ion-list>
   </ion-content>
-
 </ion-menu>
-<div class="ion-page" id="main-content">
+<div class="ion-page" id="pro-content">
   <ion-content>
-    <ion-searchbar [(ngModel)]="searchText" (ionInput)="filtrarTareas()" debounce="300"></ion-searchbar>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Proyectos</ion-title>
+      </ion-toolbar>
+    </ion-header>
     <ion-list>
-      <ion-item *ngFor="let tarea of tareasFiltradas" (click)="seleccionarTarea(tarea.codigo)">
-        {{tarea.nombre}}
+      <ion-item *ngFor="let proyecto of proyectosFiltrados" (click)="seleccionarProyecto(proyecto.codigo)">
+        {{proyecto.nombre}}
       </ion-item>
     </ion-list>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button>
-        <ion-icon name="add" (click) = irCrearTarea()></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-      <ion-fab-button>
-        <ion-icon name="close" (click) = limpiarPreferencias()></ion-icon>
+        <ion-icon name="add" (click) = irCrearProyecto()></ion-icon>
       </ion-fab-button>
     </ion-fab>
   </ion-content>
 </div>
-

@@ -7,11 +7,12 @@
 <ion-content>
   <ion-card *ngIf="tareaDetalle">
     <ion-card-header>
-      <ion-card-title>{{ tareaDetalle.tarea }}</ion-card-title>
+      <ion-card-title>{{ tareaDetalle.nombre }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p><strong>Descripcion:</strong> {{ tareaDetalle.descripcionTarea }}</p>
-      <p><strong>Fecha:</strong> {{ tareaDetalle.fechaTarea | date }}</p>
+      <p><strong>Descripcion:</strong> {{ tareaDetalle.descripcion }}</p>
+      <p><strong>Proyecto:</strong> {{ tareaDetalle.proyecto }}</p>
+      <p><strong>Fecha:</strong> {{ tareaDetalle.fecha | date }}</p>
       <ion-checkbox [(ngModel)]="tareaDetalle.completado" disabled></ion-checkbox>
       <p *ngIf="tareaDetalle.completado">Esta tarea esta completada.</p>
       <p *ngIf="!tareaDetalle.completado">Esta tarea no esta completada.</p>
